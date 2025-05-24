@@ -64,7 +64,7 @@ def play_video_sequentially(video_files):
             if fire_detected and mask is not None:
                 frame_green = frame.copy()
                 frame_green[mask > 0] = (0, 255, 0)
-                frame = cv2.addWeighted(frame, 0.5, frame_green, 0.5, 0)
+                frame = cv2.addWeighted(frame, 0.7, frame_green, 0.3, 0)
 
                 cv2.putText(frame, "Fogo Detectado", (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
                             1, (0, 0, 255), 2, cv2.LINE_AA)
