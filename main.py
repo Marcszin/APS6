@@ -35,15 +35,11 @@ def detect_fire(frame):
 
 def check_fire_color(frame):
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
     mask_orange = cv2.inRange(hsv_frame, lower_orange, upper_orange)
     mask_red_light = cv2.inRange(hsv_frame, lower_red_light, upper_red_light)
-
     combined_mask = cv2.bitwise_or(mask_orange, mask_red_light)
     area = cv2.countNonZero(combined_mask)
-
     return area > 300, combined_mask
-
 
 def detect_fire_in_video(frame):
     has_color, mask = check_fire_color(frame)
@@ -64,15 +60,11 @@ def play_video_sequentially(video_files):
             ret, frame = cap.read()
             if not ret:
                 break
-
             fire_detected, mask = detect_fire_in_video(frame)
-
             if fire_detected and mask is not None:
                 frame_green = frame.copy()
-
                 frame_green[mask > 0] = (0, 255, 0)
-
-                frame = cv2.addWeighted(frame, 0.7, frame_green, 0.3, 0)
+                frame = cv2.addWeighted(frame, 0.5, frame_green, 0.5, 0)
 
                 cv2.putText(frame, "Fogo Detectado", (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
                             1, (0, 0, 255), 2, cv2.LINE_AA)
@@ -81,12 +73,8 @@ def play_video_sequentially(video_files):
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
         cap.release()
-
     cv2.destroyAllWindows()
-
-
 
 video_files = ['Queimadas.mp4', 'NATUREZA.mp4']
 play_video_sequentially(video_files)
