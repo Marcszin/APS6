@@ -68,16 +68,12 @@ def play_video_sequentially(video_files):
             fire_detected, mask = detect_fire_in_video(frame)
 
             if fire_detected and mask is not None:
-                # Cria uma cópia do frame para modificar
                 frame_green = frame.copy()
 
-                # Pinta de verde só os pixels onde a máscara é diferente de zero
                 frame_green[mask > 0] = (0, 255, 0)
 
-                # Faz uma mistura suave entre o frame original e o frame verde (50% transparência)
                 frame = cv2.addWeighted(frame, 0.7, frame_green, 0.3, 0)
 
-                # Texto de fogo detectado
                 cv2.putText(frame, "Fogo Detectado", (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
                             1, (0, 0, 255), 2, cv2.LINE_AA)
 
